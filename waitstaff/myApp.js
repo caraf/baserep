@@ -44,17 +44,16 @@ angular.module('myApp', ['ngMessages'])
 
     $scope.cancel = function() {
         $scope.initInputValues();     
-        $scope.myForm.$submitted = false;
+        $scope.myForm.$setPristine();
         console.log($scope.myForm);
 
     };
 
     $scope.reset = function() {
         $scope.initValues();     
-        $scope.myForm.$submitted = false;
+        $scope.myForm.$setPristine();
 
     };
-
 
 
 });

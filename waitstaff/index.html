@@ -17,8 +17,8 @@
 	<p>Tax Rate: % <input type="text" name="taxRate" ng-model="data.taxRate" required ng-pattern="/^\d*\.?\d+$/"></p> 
 	<p>Tip Percentage: % <input type="number" name="tipPercentage" ng-model="data.tipPercentage" required ng-pattern="/^\d*\.?\d+$/"></p> 
 
-	<button ng-click="submit()">Submit</button>
-	<button ng-click="cancel()">Cancel</button>
+	<button type="button" ng-click="submit()">Submit</button>
+	<button type="button" ng-click="cancel()">Cancel</button>
       </div>
 
       <div class="info">
@@ -36,7 +36,7 @@
 	<p>Meal Count: {{data.mealCount}}</p>
 	<p>Average Tip Per Meal: {{data.avgTipPerMeal}}</p>
       </div>
-      <button ng-click="reset()">Reset</button>
+      <button type="button" ng-click="reset()">Reset</button>
     </form>
 
     <div ng-if="myForm.$submitted"  ng-messages="myForm.baseMealPrice.$error">
