@@ -1,69 +1,111 @@
-angular.module('myApp', ['ngMessages', 'ngRoute'])
+    angular.module('myApp', ['ngMessages', 'ngRoute'])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/home/', {
-	    templateUrl: 'home.html'
-	})
+            templateUrl: 'home.html'
+        })
         $routeProvider.when('/', {
-	    templateUrl: 'home.html'
-	})
-        .when('/meal/', {})
-	.when('/earnings/', {})
-        .when('/error', {
-            template: '<p>Error - Page Not Found</p>'
+            templateUrl: 'home.html'
+        })
+        .when('/new-meal/', {
+            templateUrl: 'new-meal.html',
+            controller: 'NewMealCtrl'
+        })
+        .when('/my-earnings/', {
+        templateUrl: 'my-earnings.html',
+        controller: 'EarningsCtrl'
+        })
+        .otherwise('/error', {
+            template: 'home.html'
         });
     }])
-    .controller('MyCtrl', function($scope) {
+    .controller('EarningsCtrl', function($scope, $rootScope) {
 
-    $scope.data = [];
+        $scope.setLocal = function() {
+            $scope.tipTotal = $rootScope.tipTotal;
+            $scope.mealCount = $rootScope.mealCount;
+            $scope.avgTipPerMeal = $rootScope.avgTipPerMeal;
+        }
 
+        if ($rootScope.tipTotal == undefined) {
+             $scope.tipTotal = "0.00";
+             $scope.mealCount = 0;
+             $scope.avgTipPerMeal = "0.00";
+         }
+         else {
+             $scope.setLocal();
+         } 
+
+
+        $scope.initValues = function() {
+            $rootScope.baseMealPrice = "0.00";
+            $rootScope.taxRate = "";
+            $rootScope.tipPercentage = "";
+            $rootScope.subTotal = "0.00";
+            $rootScope.tip = "0.00";
+            $rootScope.total = "0.00";
+            $rootScope.tipTotal = "0.00";
+            $rootScope.mealCount = 0;
+            $rootScope.avgTipPerMeal = "0.00";
+            $scope.setLocal();
+
+        };
+
+        $scope.reset = function() {
+            $scope.initValues();     
+            $rootScope.reset= 1;
+        };
+
+       
+    })
+
+    .controller('NewMealCtrl', function($scope, $rootScope) {
+
+    
     $scope.submit = function() {
-        console.log($scope.myForm);
 
         if ($scope.myForm.$valid)
-	{
+        {
+            $rootScope.baseMealPrice = $scope.baseMealPrice;
+            $rootScope.taxRate = $scope.taxRate;
+            $rootScope.tipPercentage = $scope.tipPercentage;
 
-            $scope.data.subTotal = (parseInt($scope.data.baseMealPrice) + (parseInt($scope.data.baseMealPrice) * parseInt($scope.data.taxRate) / 100)).toFixed(2);
-            $scope.data.tip = parseInt($scope.data.subTotal * $scope.data.tipPercentage / 100).toFixed(2);
-            $scope.data.total = (parseInt($scope.data.subTotal) + parseInt($scope.data.tip)).toFixed(2);
+            $rootScope.subTotal = (parseInt($rootScope.baseMealPrice) + (parseInt($rootScope.baseMealPrice) * parseInt($rootScope.taxRate) / 100)).toFixed(2);
+            $rootScope.tip = parseInt($rootScope.subTotal * $rootScope.tipPercentage / 100).toFixed(2);
+            $rootScope.total = (parseInt($rootScope.subTotal) + parseInt($rootScope.tip)).toFixed(2);
+    
+            $rootScope.tipTotal = (parseInt($rootScope.tipTotal) + parseInt($rootScope.tip)).toFixed(2);
+            $rootScope.mealCount++; 
+            $rootScope.avgTipPerMeal = ($rootScope.tipTotal / $rootScope.mealCount).toFixed(2);
+  
 
-	    $scope.data.tipTotal = (parseInt($scope.data.tipTotal) + parseInt($scope.data.tip)).toFixed(2);
-	    $scope.data.mealCount++; 
-	    $scope.data.avgTipPerMeal = ($scope.data.tipTotal / $scope.data.mealCount).toFixed(2);
-
-	}
+        }
       
     };
 
-    $scope.initInputValues = function()
-    {
-        $scope.data.baseMealPrice = "0.00";
-        $scope.data.taxRate = "";
-        $scope.data.tipPercentage = "";
+    $scope.initInputValues = function() {
+        $rootScope.baseMealPrice = "0.00";
+        $rootScope.taxRate = "";
+        $rootScope.tipPercentage = "";
     };
 
     $scope.initValues = function() {
         $scope.initInputValues();
-	$scope.data.subTotal = "0.00";
-	$scope.data.tip = "0.00";
-	$scope.data.total = "0.00";
-	$scope.data.tipTotal = "0.00";
-	$scope.data.mealCount = 0;
-	$scope.data.avgTipPerMeal = "0.00";
+        $rootScope.subTotal = "0.00";
+        $rootScope.tip = "0.00";
+        $rootScope.total = "0.00";
+        $rootScope.tipTotal = "0.00";
+        $rootScope.mealCount = 0;
+        $rootScope.avgTipPerMeal = "0.00";
 
 
     };
 
-    $scope.initValues();
+    if ($rootScope.tipTotal == undefined) {
+        $scope.initValues();
+    }
 
     $scope.cancel = function() {
-        $scope.initInputValues();     
-        $scope.myForm.$setPristine();
-        console.log($scope.myForm);
-
-    };
-
-    $scope.reset = function() {
-        $scope.initValues();     
+        $rootScope.initInputValues();     
         $scope.myForm.$setPristine();
 
     };
