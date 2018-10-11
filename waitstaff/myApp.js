@@ -9,11 +9,11 @@ angular.module('myApp', ['ngMessages'])
         if ($scope.myForm.$valid)
 	{
 
-            $scope.data.subTotal = (Number($scope.data.baseMealPrice) + (Number($scope.data.baseMealPrice) * Number($scope.data.taxRate) / 100)).toFixed(2);
-            $scope.data.tip = Number($scope.data.subTotal * $scope.data.tipPercentage / 100).toFixed(2);
-            $scope.data.total = (Number($scope.data.subTotal) + Number($scope.data.tip)).toFixed(2);
+            $scope.data.subTotal = (parseInt($scope.data.baseMealPrice) + (parseInt($scope.data.baseMealPrice) * parseInt($scope.data.taxRate) / 100)).toFixed(2);
+            $scope.data.tip = parseInt($scope.data.subTotal * $scope.data.tipPercentage / 100).toFixed(2);
+            $scope.data.total = (parseInt($scope.data.subTotal) + parseInt($scope.data.tip)).toFixed(2);
 
-	    $scope.data.tipTotal = (Number($scope.data.tipTotal) + Number($scope.data.tip)).toFixed(2);
+	    $scope.data.tipTotal = (parseInt($scope.data.tipTotal) + parseInt($scope.data.tip)).toFixed(2);
 	    $scope.data.mealCount++; 
 	    $scope.data.avgTipPerMeal = ($scope.data.tipTotal / $scope.data.mealCount).toFixed(2);
 
